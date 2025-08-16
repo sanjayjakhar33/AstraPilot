@@ -3,6 +3,7 @@ uvicorn[standard]
 sqlalchemy
 alembic
 asyncpg
+aiosqlite
 databases
 python-dotenv
 passlib[bcrypt]
@@ -10,3 +11,11 @@ pydantic
 python-jose[cryptography]
 python-multipart
 email-validator
+requests
+beautifulsoup4
+lxml
+nltk
+textstat
+openai
+stripe
+httpx
