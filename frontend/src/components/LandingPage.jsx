@@ -5,6 +5,7 @@ import {
   Star, CheckCircle, Target, Brain, Rocket, 
   Sparkles, Play, MousePointer
 } from 'lucide-react';
+import SEOHead from './SEOHead';
 
 const LandingPage = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -167,6 +168,30 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen overflow-hidden">
+      {/* SEO Head with optimized meta tags */}
+      <SEOHead 
+        title="AstraPilot - #1 Ultra AI-Powered SEO Platform | Dominate Search Rankings"
+        description="Transform your SEO strategy with intelligent AI analysis, real-time keyword research, and automated recommendations. Join 10,000+ businesses dominating search rankings with AstraPilot's ultra AI-powered platform."
+        keywords="AI SEO tools, SEO analysis, keyword research, search engine optimization, SEO audit, ranking optimization, organic traffic, SERP analysis, competitor analysis, SEO platform, AI-powered SEO, ultra SEO tools"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "AstraPilot",
+          "description": "Ultra AI-Powered SEO Platform for dominating search rankings",
+          "applicationCategory": "SEO Software",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "10000"
+          }
+        }}
+      />
       {/* Enhanced Hero Section */}
       <section className="relative bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 text-white overflow-hidden">
         {/* Animated Background */}
