@@ -19,3 +19,4 @@ textstat
 openai
 stripe
 httpx
+websockets

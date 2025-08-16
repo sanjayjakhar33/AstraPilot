@@ -401,29 +401,78 @@ class SEOAnalyzer:
 
 # Enhanced service functions
 async def perform_seo_analysis(db: AsyncSession, user_id: int, request: SEOAnalysisRequest) -> SEOAnalysisResult:
-    """Perform comprehensive SEO analysis"""
-    analyzer = SEOAnalyzer()
-    analysis_result = await analyzer.analyze_website(request)
-    
-    # Convert the result to a dict with JSON serializable values
-    result_dict = analysis_result.model_dump()
-    
-    # Convert datetime to string for JSON serialization
-    if 'analysis_date' in result_dict:
-        result_dict['analysis_date'] = result_dict['analysis_date'].isoformat()
-    
-    # Save to database
-    seodata = SeoData(
-        user_id=user_id,
-        url=str(request.url),
-        analysis_result=result_dict,
-        score=analysis_result.overall_score
-    )
-    db.add(seodata)
-    await db.commit()
-    await db.refresh(seodata)
-    
-    return analysis_result
+    """Perform comprehensive AI-enhanced SEO analysis"""
+    try:
+        # Import AI service
+        from app.services.ai_service import enhance_seo_with_ai
+        
+        # Perform basic analysis
+        analyzer = SEOAnalyzer()
+        basic_analysis = await analyzer.analyze_website(request)
+        
+        # Get website content for AI enhancement
+        try:
+            response = analyzer.session.get(str(request.url), timeout=10)
+            response.raise_for_status()
+            content = response.text
+        except Exception:
+            content = ""
+        
+        # Enhance with AI if content is available
+        if content and len(content) > 100:
+            try:
+                enhanced_analysis = await enhance_seo_with_ai(basic_analysis, content)
+            except Exception as e:
+                print(f"AI enhancement failed, using basic analysis: {str(e)}")
+                enhanced_analysis = basic_analysis
+        else:
+            enhanced_analysis = basic_analysis
+        
+        # Convert the result to a dict with JSON serializable values
+        result_dict = enhanced_analysis.model_dump()
+        
+        # Convert datetime to string for JSON serialization
+        if 'analysis_date' in result_dict:
+            result_dict['analysis_date'] = result_dict['analysis_date'].isoformat()
+        
+        # Save to database
+        seodata = SeoData(
+            user_id=user_id,
+            url=str(request.url),
+            analysis_result=result_dict,
+            score=enhanced_analysis.overall_score
+        )
+        db.add(seodata)
+        await db.commit()
+        await db.refresh(seodata)
+        
+        return enhanced_analysis
+        
+    except Exception as e:
+        # Fallback to basic analysis if AI enhancement fails
+        print(f"Enhanced analysis failed, falling back to basic: {str(e)}")
+        analyzer = SEOAnalyzer()
+        analysis_result = await analyzer.analyze_website(request)
+        
+        # Convert the result to a dict with JSON serializable values
+        result_dict = analysis_result.model_dump()
+        
+        # Convert datetime to string for JSON serialization
+        if 'analysis_date' in result_dict:
+            result_dict['analysis_date'] = result_dict['analysis_date'].isoformat()
+        
+        # Save to database
+        seodata = SeoData(
+            user_id=user_id,
+            url=str(request.url),
+            analysis_result=result_dict,
+            score=analysis_result.overall_score
+        )
+        db.add(seodata)
+        await db.commit()
+        await db.refresh(seodata)
+        
+        return analysis_result
 
 async def get_recent_seo_results(db: AsyncSession, user_id: int, limit: int = 10) -> List[SeoData]:
     """Get recent SEO analyses for a user"""
