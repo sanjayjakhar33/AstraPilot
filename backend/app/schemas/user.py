@@ -19,6 +19,7 @@ class UserInDB(UserBase):
     id: int
     is_active: bool
     is_superuser: bool
+    email_verified: bool
     created_at: datetime
     
     model_config = ConfigDict(from_attributes=True)
@@ -29,6 +30,19 @@ class User(UserInDB):
 class UserResponse(UserBase):
     id: int
     is_active: bool
+    email_verified: bool
     created_at: datetime
     
     model_config = ConfigDict(from_attributes=True)
+
+# OTP-related schemas
+class OTPVerificationRequest(BaseModel):
+    user_id: int
+    otp_code: str
+
+class OTPSendRequest(BaseModel):
+    user_id: int
+
+class OTPResponse(BaseModel):
+    success: bool
+    message: str

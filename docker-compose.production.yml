@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:bSghl^seBJyv697FyjBM#Z*1y@astrapilot.c8n5v7s8x9rk.ap-south-1.rds.amazonaws.com:5432/postgres
+      SECRET_KEY: ${SECRET_KEY:-your-super-secret-production-key-change-this}
+      SMTP_HOST: smtp.zoho.in
+      SMTP_PORT: 587
+      SMTP_USERNAME: info@astranetix.in
+      SMTP_PASSWORD: 8k6UW8zPfU3g
+      SMTP_FROM_EMAIL: info@astranetix.in
+      OTP_EXPIRE_MINUTES: 10
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Nginx reverse proxy (optional for production)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped

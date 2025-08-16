@@ -6,6 +6,7 @@ from sqlalchemy.future import select
 from app.models.user import User
 from app.schemas.user import UserCreate
 from app.settings import settings
+from app.services.otp_service import create_and_send_otp
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ALGORITHM = "HS256"
@@ -18,6 +19,10 @@ async def get_user_by_email(db: AsyncSession, email: str):
     q = await db.execute(select(User).where(User.email == email))
     return q.scalars().first()
 
+async def get_user_by_id(db: AsyncSession, user_id: int):
+    q = await db.execute(select(User).where(User.id == user_id))
+    return q.scalars().first()
+
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -25,14 +30,27 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 async def create_user(db: AsyncSession, user_in: UserCreate):
-    existing = await get_user_by_username(db, user_in.username)
-    if existing:
+    # Check if user already exists
+    existing_username = await get_user_by_username(db, user_in.username)
+    existing_email = await get_user_by_email(db, user_in.email)
+    
+    if existing_username or existing_email:
         return None
+    
     hashed = get_password_hash(user_in.password)
-    user = User(username=user_in.username, email=user_in.email, hashed_password=hashed)
+    user = User(
+        username=user_in.username, 
+        email=user_in.email, 
+        hashed_password=hashed,
+        email_verified=False  # New users start unverified
+    )
     db.add(user)
     await db.commit()
     await db.refresh(user)
+    
+    # Send OTP email
+    await create_and_send_otp(db, user.id)
+    
     return user
 
 async def authenticate_user(db: AsyncSession, username: str, password: str):
