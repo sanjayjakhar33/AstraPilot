@@ -29,6 +29,9 @@ async def get_db() -> AsyncSession:
 
 # Function to create tables
 async def create_tables():
+    # Import all models to ensure they're registered with Base
+    from app.models import User, Payment, License, SeoData, Social
+    
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
