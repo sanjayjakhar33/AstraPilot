@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { Search, Globe, CheckCircle, AlertTriangle, XCircle, Download } from 'lucide-react';
+import { Search, CheckCircle, XCircle, Download } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const SeoTools = () => {
   const [analysisResult, setAnalysisResult] = useState(null);
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const analysisMutation = useMutation(
     (data) => axios.post('http://localhost:8000/seo/analyze', data),
