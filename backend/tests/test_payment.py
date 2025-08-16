@@ -8,3 +8,4 @@ def test_checkout():
     assert response.status_code == 200
     result = response.json()
     assert result["plan"] == "pro"
+    assert result["status"] == "paid"
