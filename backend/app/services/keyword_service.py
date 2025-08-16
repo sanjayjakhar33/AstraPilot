@@ -289,9 +289,41 @@ class KeywordAnalyzer:
 
 # Service functions
 async def research_keywords(keyword_request: KeywordRequest) -> KeywordResearch:
-    """Main keyword research function"""
-    analyzer = KeywordAnalyzer()
-    return await analyzer.research_keyword(keyword_request)
+    """Main keyword research function with AI enhancement"""
+    try:
+        # Import AI service
+        from app.services.ai_service import generate_ai_keywords
+        
+        # Perform traditional keyword analysis
+        analyzer = KeywordAnalyzer()
+        basic_research = await analyzer.research_keyword(keyword_request)
+        
+        # Enhance with AI-generated keywords
+        try:
+            ai_keywords = await generate_ai_keywords(
+                keyword_request.keyword, 
+                getattr(keyword_request, 'business_context', '')
+            )
+            
+            # Merge AI keywords with related keywords
+            if ai_keywords:
+                # Add AI keywords as high-quality suggestions
+                basic_research.related_keywords.extend(ai_keywords[:5])
+                # Sort by relevance score
+                basic_research.related_keywords.sort(key=lambda x: x.relevance_score, reverse=True)
+                # Keep top 15 to avoid overwhelming
+                basic_research.related_keywords = basic_research.related_keywords[:15]
+                
+        except Exception as e:
+            print(f"AI keyword enhancement failed: {str(e)}")
+        
+        return basic_research
+        
+    except Exception as e:
+        # Fallback to basic analysis
+        print(f"Enhanced keyword research failed: {str(e)}")
+        analyzer = KeywordAnalyzer()
+        return await analyzer.research_keyword(keyword_request)
 
 async def analyze_competitor_keywords(domain: str, user_keywords: List[str] = None) -> CompetitorAnalysis:
     """Analyze competitor keywords"""

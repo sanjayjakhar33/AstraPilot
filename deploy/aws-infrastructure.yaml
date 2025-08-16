@@ -1,8 +1,9 @@
 # AWS CloudFormation template for AstraPilot deployment
-# Designed for AWS Free Tier usage
+# Production-ready infrastructure optimized for AWS Free Tier
+# Ultra AI-Powered SEO Platform
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'AstraPilot - AI-powered SEO platform infrastructure for AWS Free Tier'
+Description: 'AstraPilot v2.0 - Ultra AI-powered SEO platform infrastructure for AWS Free Tier with production optimizations'
 
 Parameters:
   DBPassword:
@@ -11,6 +12,32 @@ Parameters:
     NoEcho: true
     MinLength: 8
     ConstraintDescription: 'Must be at least 8 characters long'
+  
+  OpenAIAPIKey:
+    Description: 'OpenAI API Key for AI-powered features'
+    Type: String
+    NoEcho: true
+    ConstraintDescription: 'Required for AI enhancements'
+  
+  DomainName:
+    Description: 'Domain name for the application (optional)'
+    Type: String
+    Default: ''
+  
+  Environment:
+    Description: 'Environment type'
+    Type: String
+    Default: 'production'
+    AllowedValues: ['development', 'staging', 'production']
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      AMI: ami-0c7217cdde317cfec  # Amazon Linux 2023
+    us-west-2:
+      AMI: ami-0cf2b4e024cdb6960  # Amazon Linux 2023
+    eu-west-1:
+      AMI: ami-0905a3c97561e0b69  # Amazon Linux 2023
 
 Resources:
   # VPC and Networking
