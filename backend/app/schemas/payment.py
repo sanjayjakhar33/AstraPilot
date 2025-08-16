@@ -5,6 +5,7 @@ from datetime import datetime
 class PaymentRequest(BaseModel):
     plan: str
     user_id: Optional[int] = None
+    billing_cycle: Optional[str] = "monthly"
 
 class PaymentResponse(BaseModel):
     status: str

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import routes_auth, routes_dashboard, routes_license, routes_payment, routes_seo, routes_social
+from app.api import routes_auth, routes_dashboard, routes_license, routes_payment, routes_seo, routes_social, routes_keywords
 
 app = FastAPI(
     title="1clickseo API",
@@ -22,6 +22,7 @@ app.include_router(routes_license.router)
 app.include_router(routes_payment.router)
 app.include_router(routes_seo.router)
 app.include_router(routes_social.router)
+app.include_router(routes_keywords.router)
 
 @app.get("/health", tags=["System"])
 async def health_check():
