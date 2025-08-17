@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Settings:
-    PROJECT_NAME = "1clickseo API"
+    PROJECT_NAME = "AstraPilot API"
     PROJECT_DESC = "Ultra-rich SEO & AI SaaS backend"
-    PROJECT_VERSION = "0.1.0"
+    PROJECT_VERSION = "2.0.0"
     SECRET_KEY = os.getenv("SECRET_KEY", "REPLACE_ME")
     ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # one week
     SQLALCHEMY_DATABASE_URL = os.getenv(
@@ -22,5 +22,12 @@ class Settings:
     
     # OTP Configuration
     OTP_EXPIRE_MINUTES = int(os.getenv("OTP_EXPIRE_MINUTES", "10"))
+    
+    # OpenAI Configuration
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    
+    # Admin Configuration
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@astranetix.in")
+    ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 
 settings = Settings()
