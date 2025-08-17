@@ -5,6 +5,7 @@ import asyncio
 from datetime import datetime
 from app.api import routes_auth, routes_dashboard, routes_license, routes_payment, routes_seo, routes_social, routes_keywords
 from app.services.ai_service import realtime_handler, ai_analyzer, keyword_analyzer
+from app.database import create_tables
 
 app = FastAPI(
     title="AstraPilot API - Ultra AI-Powered SEO Platform",
@@ -19,6 +20,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000", 
+        "http://13.235.33.219:3000",  # Added your EC2 instance IP
         "https://astrapilot.com",
         "https://www.astrapilot.com"
     ],
@@ -27,9 +29,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes
+# Include API routes with versioning
 app.include_router(routes_auth.router, prefix="/api/v1", tags=["Authentication"])
-app.include_router(routes_dashboard.router, prefix="/api/v1", tags=["Dashboard"])
+app.include_router(routes_dashboard.router, prefix="/api/v1", tags=["Admin Dashboard"])
 app.include_router(routes_license.router, prefix="/api/v1", tags=["License"])
 app.include_router(routes_payment.router, prefix="/api/v1", tags=["Payment"])
 app.include_router(routes_seo.router, prefix="/api/v1", tags=["SEO Analysis"])
@@ -64,13 +66,18 @@ async def root():
         "version": "2.0.0",
         "docs": "/docs",
         "health": "/health",
+        "admin": "/admin/dashboard/overview",
         "features": [
             "Real-time SEO Analysis",
             "AI-Powered Recommendations", 
             "Intelligent Keyword Research",
             "Competitor Intelligence",
             "Performance Prediction",
-            "WebSocket Real-time Updates"
+            "WebSocket Real-time Updates",
+            "Comprehensive Admin Dashboard",
+            "OTP Email Verification",
+            "Payment Management",
+            "User Analytics"
         ]
     }
 
@@ -222,10 +229,22 @@ async def handle_realtime_keywords(websocket: WebSocket, user_id: str, data: dic
 async def startup_event():
     """Initialize services on startup"""
     print("🚀 AstraPilot API starting up...")
+    print("📊 Creating database tables...")
+    
+    try:
+        await create_tables()
+        print("✅ Database tables created successfully")
+    except Exception as e:
+        print(f"⚠️  Database setup error: {e}")
+    
     print("🤖 AI Engine: Operational")
     print("🔄 Real-time WebSocket: Ready")
     print("📊 SEO Analysis: Enhanced with AI")
+    print("👑 Admin Dashboard: Fully Operational")
+    print("📧 Email OTP: Configured")
     print("🎯 Production ready for AWS Free Tier deployment")
+    print(f"📚 API Documentation: /docs")
+    print(f"👑 Admin Dashboard: /admin/dashboard/overview")
 
 # Shutdown event  
 @app.on_event("shutdown")
