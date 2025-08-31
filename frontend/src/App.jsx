@@ -12,6 +12,12 @@ import KeywordTools from './components/KeywordTools';
 import LicensePanel from './components/LicensePanel';
 import PaymentForm from './components/PaymentForm';
 import LandingPage from './components/LandingPage';
+import About from './components/About';
+import Contact from './components/Contact';
+import Privacy from './components/Privacy';
+import Terms from './components/Terms';
+import Docs from './components/Docs';
+import NotFound from './components/NotFound';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -37,6 +43,12 @@ function App() {
               <Route path="/keyword-tools" element={<KeywordTools />} />
               <Route path="/license" element={<LicensePanel />} />
               <Route path="/payment" element={<PaymentForm />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/docs" element={<Docs />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Toaster 
