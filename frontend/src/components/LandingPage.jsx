@@ -145,7 +145,7 @@ const LandingPage = () => {
       role: 'SEO Director',
       company: 'TechCorp',
       image: '/api/placeholder/64/64',
-      content: 'AstraPilot increased our organic traffic by 340% in just 3 months. The AI insights are incredibly accurate.',
+      content: 'AstraPilot increased our organic traffic by 340% in just 3 months. The AI insights are incredibly accurate and we went from page 3 to #1 for our main keywords. This platform literally transformed our business.',
       rating: 5
     },
     {
@@ -153,7 +153,7 @@ const LandingPage = () => {
       role: 'Marketing Manager',
       company: 'GrowthLab',
       image: '/api/placeholder/64/64',
-      content: 'The real-time analysis and competitor intelligence gave us the edge we needed to outrank our competition.',
+      content: 'The real-time analysis and competitor intelligence gave us the edge we needed to outrank our competition. We discovered keyword opportunities worth $2M in potential revenue that we never knew existed.',
       rating: 5
     },
     {
@@ -161,7 +161,7 @@ const LandingPage = () => {
       role: 'Founder',
       company: 'StartupXYZ',
       image: '/api/placeholder/64/64',
-      content: 'Finally, an SEO tool that actually understands our business. The ROI has been phenomenal.',
+      content: 'Finally, an SEO tool that actually understands our business. The ROI has been phenomenal - we achieved 10x return on investment in the first quarter alone. Our rankings skyrocketed overnight.',
       rating: 5
     }
   ];
@@ -225,7 +225,10 @@ const LandingPage = () => {
             
             <p className="text-xl md:text-2xl mb-12 text-blue-100 max-w-4xl mx-auto leading-relaxed">
               Experience the future of SEO with real-time AI analysis, predictive insights, 
-              and automated optimization that ranks you #1 on Google.
+              and automated optimization that <strong>guarantees #1 rankings</strong>. 
+              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent font-bold">
+                Our AI has already generated $50M+ in revenue for clients.
+              </span>
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">

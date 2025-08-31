@@ -6,6 +6,7 @@ import './styles/globals.css';
 
 // Components
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Dashboard from './components/Dashboard';
 import SeoTools from './components/SeoTools';
 import KeywordTools from './components/KeywordTools';
@@ -51,6 +52,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
+          <Footer />
           <Toaster 
             position="top-right"
             toastOptions={{
